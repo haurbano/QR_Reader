@@ -9,7 +9,7 @@ import android.view.View;
 import com.example.farley.qrreader.databinding.ActivityMainBinding;
 import com.example.farley.qrreader.fragments.QRScannerFragment;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, QRScannerFragment.Ireader {
 
     ActivityMainBinding binding;
 
@@ -18,15 +18,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         binding.btnStartScan.setOnClickListener(this);
+
+
     }
 
     @Override
     public void onClick(View view) {
+        loadReader();
+    }
 
+    private void loadReader(){
         QRScannerFragment fragment = new QRScannerFragment();
+        fragment.setInterface(this);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_scann,fragment);
         transaction.commit();
         fragment.startScann();
+    }
+
+    @Override
+    public void setResult(String result) {
+        loadReader();
     }
 }

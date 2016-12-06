@@ -2,7 +2,9 @@ package com.example.farley.qrreader.fragments;
 
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +23,19 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class QRScannerFragment extends Fragment implements ZXingScannerView.ResultHandler {
 
     ZXingScannerView scannerView;
+    Ireader ireader;
 
     public QRScannerFragment() {
         // Required empty public constructor
     }
 
+    public interface Ireader{
+        void setResult(String result);
+    }
+
+    public void setInterface(Ireader ireader){
+        this.ireader =ireader;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,9 +49,16 @@ public class QRScannerFragment extends Fragment implements ZXingScannerView.Resu
         return scannerView;
     }
 
+
+
+
     @Override
     public void handleResult(Result result) {
-        Toast.makeText(getContext(),result.getText(),Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Premio");
+        builder.setMessage(result.getText());
+        builder.create().show();
+        ireader.setResult(result.getText());
     }
 
     public void startScann(){

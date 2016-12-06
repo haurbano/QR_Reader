@@ -49,10 +49,10 @@ public class SecondQReader extends AppCompatActivity implements SurfaceHolder.Ca
             return;
         }
         try {
-            cameraSource.start(viewCamera.getHolder());
             barcodeDetector.setProcessor(this);
+            cameraSource.start(viewCamera.getHolder());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("haur","Error en start: "+e.toString());
         }
     }
 
